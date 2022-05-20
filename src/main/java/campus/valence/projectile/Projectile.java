@@ -6,7 +6,10 @@ import javax.swing.*;
 import java.awt.*;
 
 public abstract class Projectile extends JPanel implements InMovement {
-    public Projectile(int xPosition, int yPosition) {
+    private int strength;
+
+    public Projectile(int xPosition, int yPosition, int strength) {
+        this.strength = strength;
         this.setBounds(xPosition, yPosition, 10, 10);
         this.setBackground(Color.magenta);
     }
