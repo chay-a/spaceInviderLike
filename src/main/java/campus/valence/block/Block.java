@@ -5,8 +5,10 @@ import java.awt.*;
 import java.util.Random;
 
 public abstract class Block extends JPanel {
+    private int life;
 
-    public Block(int frameWidth) {
+    public Block(int frameWidth, int life) {
+        this.life = life;
         Random r = new Random();
         int low = 10;
         int high = frameWidth-40;

@@ -6,10 +6,11 @@ import java.awt.*;
 public class Destroyer {
 
     private static int STEP = 5;
-
+    private int life;
     private final JPanel panel;
 
     Destroyer() {
+        this.life = 3;
         panel = new JPanel();
         panel.setBounds(150, 500, 100, 30);
         panel.setBackground(Color.PINK);
