@@ -4,12 +4,15 @@ import campus.valence.block.Block;
 import campus.valence.block.SimpleBlock;
 
 import javax.swing.*;
+import java.util.ArrayList;
+import java.util.List;
 
 public class SpaceCampus {
 
     private JFrame frame;
     private JPanel panel;
     private Destroyer destroyer;
+    private List<Block> blocks = new ArrayList<>();
 
     SpaceCampus() {
         panel = new JPanel();
@@ -29,8 +32,10 @@ public class SpaceCampus {
             @Override
             public void run() {
                 while (true) {
-                    Block block = createBlock();
-                    block.move();
+                    createBlock();
+                    for (Block block : blocks) {
+                        block.move();
+                    }
                     try {
                         Thread.sleep(200000/60l);
                     } catch (Exception e) {
@@ -42,11 +47,11 @@ public class SpaceCampus {
         }).start();
     }
 
-    private Block createBlock() {
+    private void createBlock() {
         Block block = new SimpleBlock(frame.getWidth());
+        blocks.add(block);
         panel.add(block);
         panel.repaint();
-        return block;
     }
 
     public void launch() {
@@ -54,7 +59,7 @@ public class SpaceCampus {
     }
 
     private void createDestroyer() {
-        destroyer = new Destroyer();
+        destroyer = new Destroyer(this.panel);
         this.panel.add(destroyer.getPanel());
         this.panel.addKeyListener(new GameKeyListener(destroyer));
     }
