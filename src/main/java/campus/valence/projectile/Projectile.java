@@ -8,6 +8,15 @@ import java.awt.*;
 public abstract class Projectile extends JPanel implements InMovement {
     private int strength;
 
+    public int getStrength() {
+        return strength;
+    }
+
+    public void setStrength(int strength) {
+        this.strength = strength;
+    }
+
+
     public Projectile(int xPosition, int yPosition, int strength) {
         this.strength = strength;
         this.setBounds(xPosition, yPosition, 10, 10);
@@ -29,5 +38,11 @@ public abstract class Projectile extends JPanel implements InMovement {
                 }
             }
         }).start();
+    }
+
+    @Override
+    public boolean intersect(InMovement other) {
+        JPanel otherPanel = (JPanel) other;
+        return !(otherPanel.getX()+ otherPanel.getWidth() <= this.getX() || otherPanel.getX() >= this.getX()+this.getWidth() || otherPanel.getY()+otherPanel.getHeight() <= this.getY() || otherPanel.getY() >= this.getY()+this.getHeight());
     }
 }

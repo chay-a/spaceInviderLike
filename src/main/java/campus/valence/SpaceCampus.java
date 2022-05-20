@@ -33,6 +33,21 @@ public class SpaceCampus {
             @Override
             public void run() {
                 while (true) {
+                    checkIntersect();
+//                    for (Block block : blocks) {
+//                        for (Projectile projectile: projectiles) {
+//                            boolean isIntersected = block.intersect(projectile);
+//                            if (isIntersected) {
+//                                block.setLife(block.getLife()-projectile.getStrength());
+//                                projectiles.remove(projectile);
+//                                projectile.setVisible(false);
+//                                if (block.getLife() <= 0) {
+//                                    blocks.remove(block);
+//                                    block.setVisible(false);
+//                                }
+//                            }
+//                        }
+//                    }
                     createBlock();
                     for (Block block : blocks) {
                         block.move();
@@ -56,6 +71,35 @@ public class SpaceCampus {
 
             }
         }).start();
+    }
+
+    private void checkIntersect() {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                for (Block block : blocks) {
+                    for (Projectile projectile: projectiles) {
+                        boolean isIntersected = block.intersect(projectile);
+                        if (isIntersected) {
+                            System.out.println("intersected");
+                            block.setLife(block.getLife()-projectile.getStrength());
+                            projectiles.remove(projectile);
+                            projectile.setVisible(false);
+                            if (block.getLife() <= 0) {
+                                blocks.remove(block);
+                                block.setVisible(false);
+                            }
+                        }
+                    }
+                }
+                try {
+                    Thread.sleep(1000/60l);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        }).start();
+
     }
 
     private void createBlock() {

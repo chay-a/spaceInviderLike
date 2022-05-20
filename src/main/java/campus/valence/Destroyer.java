@@ -5,6 +5,7 @@ import campus.valence.projectile.SimpleProjectile;
 
 import javax.swing.*;
 import java.awt.*;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 public class Destroyer {
 
@@ -12,9 +13,11 @@ public class Destroyer {
     private int life;
     private final JPanel panel;
     private JPanel parentPanel;
+    private CopyOnWriteArrayList<Projectile> projectiles = new CopyOnWriteArrayList<>();
 
-    Destroyer(JPanel parentPanel) {
+    Destroyer(JPanel parentPanel, CopyOnWriteArrayList<Projectile> projectiles) {
         this.parentPanel = parentPanel;
+        this.projectiles = projectiles;
         this.life = 3;
         panel = new JPanel();
         panel.setBounds(150, 500, 100, 30);
@@ -40,6 +43,7 @@ public class Destroyer {
 
     public void destroyerFire() {
         Projectile pro = new SimpleProjectile((panel.getX()+panel.getWidth())/2 + panel.getX()/2, panel.getY()-10);
+        projectiles.add(pro);
         parentPanel.add(pro);
         pro.move();
     }

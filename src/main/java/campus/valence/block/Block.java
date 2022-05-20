@@ -9,6 +9,14 @@ import java.util.Random;
 public abstract class Block extends JPanel implements InMovement {
     private int life;
 
+    public int getLife() {
+        return life;
+    }
+
+    public void setLife(int life) {
+        this.life = life;
+    }
+
     public Block(int frameWidth, int life) {
         this.life = life;
         Random r = new Random();
@@ -34,5 +42,11 @@ public abstract class Block extends JPanel implements InMovement {
                 }
             }
         }).start();
+    }
+
+    @Override
+    public boolean intersect(InMovement other) {
+        JPanel otherPanel = (JPanel) other;
+        return !(otherPanel.getX()+ otherPanel.getWidth() <= this.getX()) || !(otherPanel.getX() >= this.getX()+this.getWidth()) || !(otherPanel.getY()+otherPanel.getHeight() <= this.getY()) || !(otherPanel.getY() >= this.getY()+this.getHeight());
     }
 }
