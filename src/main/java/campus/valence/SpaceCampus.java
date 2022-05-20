@@ -2,17 +2,18 @@ package campus.valence;
 
 import campus.valence.block.Block;
 import campus.valence.block.SimpleBlock;
+import campus.valence.projectile.Projectile;
 
 import javax.swing.*;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 public class SpaceCampus {
 
     private JFrame frame;
     private JPanel panel;
     private Destroyer destroyer;
-    private List<Block> blocks = new ArrayList<>();
+    private CopyOnWriteArrayList<Block> blocks = new CopyOnWriteArrayList<>();
+    private CopyOnWriteArrayList<Projectile> projectiles = new CopyOnWriteArrayList<>();
 
     SpaceCampus() {
         panel = new JPanel();
@@ -35,6 +36,16 @@ public class SpaceCampus {
                     createBlock();
                     for (Block block : blocks) {
                         block.move();
+                        if (block.getY() > frame.getHeight()) {
+                            blocks.remove(block);
+                            block.setVisible(false);
+                        }
+                    }
+                    for (Projectile projectile : projectiles) {
+                        if (projectile.getY() < 10) {
+                            projectiles.remove(projectile);
+                            projectile.setVisible(false);
+                        }
                     }
                     try {
                         Thread.sleep(200000/60l);
@@ -59,7 +70,7 @@ public class SpaceCampus {
     }
 
     private void createDestroyer() {
-        destroyer = new Destroyer(this.panel);
+        destroyer = new Destroyer(this.panel, projectiles);
         this.panel.add(destroyer.getPanel());
         this.panel.addKeyListener(new GameKeyListener(destroyer));
     }
