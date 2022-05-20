@@ -1,7 +1,9 @@
 package campus.valence;
 
+import campus.valence.block.Block;
+import campus.valence.block.SimpleBlock;
+
 import javax.swing.*;
-import java.awt.*;
 
 public class SpaceCampus {
 
@@ -17,10 +19,34 @@ public class SpaceCampus {
         frame = new JFrame();
         frame.setTitle("SPACE CAMPUS");
         frame.setSize(400, 600);
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setContentPane(panel);
 
         createDestroyer();
-        createBlocks();
+
+
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                while (true) {
+                    Block block = createBlock();
+                    block.move();
+                    try {
+                        Thread.sleep(200000/60l);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }
+
+            }
+        }).start();
+    }
+
+    private Block createBlock() {
+        Block block = new SimpleBlock(frame.getWidth());
+        panel.add(block);
+        panel.repaint();
+        return block;
     }
 
     public void launch() {
@@ -31,17 +57,5 @@ public class SpaceCampus {
         destroyer = new Destroyer();
         this.panel.add(destroyer.getPanel());
         this.panel.addKeyListener(new GameKeyListener(destroyer));
-    }
-
-    private void createBlocks() {
-        JPanel panel1 = new JPanel();
-        panel1.setBounds(5, 5, 80, 30);
-        panel1.setBackground(Color.BLUE);
-        this.panel.add(panel1);
-
-        JPanel panel2 = new JPanel();
-        panel2.setBounds(100, 5, 80, 30);
-        panel2.setBackground(Color.BLUE);
-        this.panel.add(panel2);
     }
 }
