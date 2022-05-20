@@ -1,10 +1,12 @@
 package campus.valence.block;
 
+import campus.valence.movement.InMovement;
+
 import javax.swing.*;
 import java.awt.*;
 import java.util.Random;
 
-public abstract class Block extends JPanel {
+public abstract class Block extends JPanel implements InMovement {
     private int life;
 
     public Block(int frameWidth, int life) {
@@ -17,6 +19,7 @@ public abstract class Block extends JPanel {
         this.setBackground(Color.BLUE);
     }
 
+    @Override
     public void move() {
         new Thread(new Runnable() {
             @Override
