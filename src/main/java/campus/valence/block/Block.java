@@ -1,10 +1,14 @@
 package campus.valence.block;
 
 import campus.valence.movement.InMovement;
+import campus.valence.projectile.Projectile;
 
 import javax.swing.*;
 import java.awt.*;
 import java.util.Random;
+
+import static campus.valence.SpaceCampus.blocks;
+import static campus.valence.SpaceCampus.projectiles;
 
 public abstract class Block extends JPanel implements InMovement {
     private int life;
@@ -33,9 +37,10 @@ public abstract class Block extends JPanel implements InMovement {
             @Override
             public void run() {
                 while (true) {
-                    setBounds(getX(), getY() + 5, getWidth(), getHeight());
+                    setBounds(getX(), getY() + 1, getWidth(), getHeight());
+                    checkIntersect();
                     try {
-                        Thread.sleep(10000/60l);
+                        Thread.sleep(1000/60l);
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
@@ -44,9 +49,17 @@ public abstract class Block extends JPanel implements InMovement {
         }).start();
     }
 
-    @Override
-    public boolean intersect(InMovement other) {
-        JPanel otherPanel = (JPanel) other;
-        return !(otherPanel.getX()+ otherPanel.getWidth() <= this.getX()) || !(otherPanel.getX() >= this.getX()+this.getWidth()) || !(otherPanel.getY()+otherPanel.getHeight() <= this.getY()) || !(otherPanel.getY() >= this.getY()+this.getHeight());
+    public void checkIntersect () {
+        for (Projectile projectile: projectiles) {
+            if (this.getBounds().intersects(projectile.getBounds())) {
+                this.setLife(getLife()-projectile.getStrength());
+                projectiles.remove(projectile);
+                projectile.setVisible(false);
+                if (getLife() <= 0) {
+                    blocks.remove(this);
+                    this.setVisible(false);
+                }
+            }
+        }
     }
 }

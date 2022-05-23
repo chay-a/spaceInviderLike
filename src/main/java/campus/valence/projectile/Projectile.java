@@ -29,9 +29,9 @@ public abstract class Projectile extends JPanel implements InMovement {
             @Override
             public void run() {
                 while (true) {
-                    setBounds(getX(), getY() - 5, getWidth(), getHeight());
+                    setBounds(getX(), getY() - 1, getWidth(), getHeight());
                     try {
-                        Thread.sleep(10000/60l);
+                        Thread.sleep(100/60l);
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
@@ -40,9 +40,4 @@ public abstract class Projectile extends JPanel implements InMovement {
         }).start();
     }
 
-    @Override
-    public boolean intersect(InMovement other) {
-        JPanel otherPanel = (JPanel) other;
-        return !(otherPanel.getX()+ otherPanel.getWidth() <= this.getX() || otherPanel.getX() >= this.getX()+this.getWidth() || otherPanel.getY()+otherPanel.getHeight() <= this.getY() || otherPanel.getY() >= this.getY()+this.getHeight());
-    }
 }
