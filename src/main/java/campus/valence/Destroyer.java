@@ -32,7 +32,7 @@ public class Destroyer {
     }
 
     public void moveRight() {
-        if (panel.getX() < game.getFrame().getWidth()) {
+        if (panel.getX() < game.getFrame().getWidth()- panel.getWidth() - 10) {
             moveX(STEP);
         }
     }
