@@ -12,10 +12,10 @@ public class Destroyer {
     private static int STEP = 5;
     private int life;
     private final JPanel panel;
-    private JPanel parentPanel;
+    private JLayeredPane parentPanel;
     private CopyOnWriteArrayList<Projectile> projectiles = new CopyOnWriteArrayList<>();
 
-    Destroyer(JPanel parentPanel, CopyOnWriteArrayList<Projectile> projectiles) {
+    Destroyer(JLayeredPane parentPanel, CopyOnWriteArrayList<Projectile> projectiles) {
         this.parentPanel = parentPanel;
         this.projectiles = projectiles;
         this.life = 3;
@@ -44,7 +44,7 @@ public class Destroyer {
     public void destroyerFire() {
         Projectile pro = new SimpleProjectile((panel.getX()+panel.getWidth())/2 + panel.getX()/2, panel.getY()-10);
         projectiles.add(pro);
-        parentPanel.add(pro);
+        parentPanel.add(pro, 1, 0);
         pro.move();
     }
 

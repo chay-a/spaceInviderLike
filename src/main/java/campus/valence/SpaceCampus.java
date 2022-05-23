@@ -10,13 +10,13 @@ import java.util.concurrent.CopyOnWriteArrayList;
 public class SpaceCampus {
 
     private JFrame frame;
-    private JPanel panel;
+    private JLayeredPane panel;
     private Destroyer destroyer;
     private CopyOnWriteArrayList<Block> blocks = new CopyOnWriteArrayList<>();
     private CopyOnWriteArrayList<Projectile> projectiles = new CopyOnWriteArrayList<>();
 
     SpaceCampus() {
-        panel = new JPanel();
+        panel = new JLayeredPane();
         panel.setFocusable(true);
         panel.setLayout(null);
 
@@ -33,7 +33,7 @@ public class SpaceCampus {
             @Override
             public void run() {
                 while (true) {
-                    checkIntersect();
+//                    checkIntersect();
 //                    for (Block block : blocks) {
 //                        for (Projectile projectile: projectiles) {
 //                            boolean isIntersected = block.intersect(projectile);
@@ -105,7 +105,7 @@ public class SpaceCampus {
     private void createBlock() {
         Block block = new SimpleBlock(frame.getWidth());
         blocks.add(block);
-        panel.add(block);
+        panel.add(block, 2, 0);
         panel.repaint();
     }
 
