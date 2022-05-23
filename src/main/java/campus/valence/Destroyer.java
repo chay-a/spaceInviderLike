@@ -1,5 +1,6 @@
 package campus.valence;
 
+import campus.valence.context.GameContext;
 import campus.valence.projectile.Projectile;
 import campus.valence.projectile.SimpleProjectile;
 
@@ -13,11 +14,11 @@ public class Destroyer {
     private int life;
     private final JPanel panel;
     private JLayeredPane parentPanel;
-    private CopyOnWriteArrayList<Projectile> projectiles = new CopyOnWriteArrayList<>();
+    private GameContext game;
 
-    Destroyer(JLayeredPane parentPanel, CopyOnWriteArrayList<Projectile> projectiles) {
+    Destroyer(JLayeredPane parentPanel) {
+        this.game = GameContext.getInstance();
         this.parentPanel = parentPanel;
-        this.projectiles = projectiles;
         this.life = 3;
         panel = new JPanel();
         panel.setBounds(150, 500, 100, 30);
@@ -31,7 +32,7 @@ public class Destroyer {
     }
 
     public void moveRight() {
-        if (panel.getX() < 290) {
+        if (panel.getX() < game.getFrame().getWidth()) {
             moveX(STEP);
         }
     }
@@ -43,7 +44,7 @@ public class Destroyer {
 
     public void destroyerFire() {
         Projectile pro = new SimpleProjectile((panel.getX()+panel.getWidth())/2 + panel.getX()/2, panel.getY()-10);
-        projectiles.add(pro);
+        game.getProjectiles().add(pro);
         parentPanel.add(pro, 1, 0);
         pro.move();
     }

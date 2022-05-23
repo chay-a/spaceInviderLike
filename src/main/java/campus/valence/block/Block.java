@@ -1,5 +1,6 @@
 package campus.valence.block;
 
+import campus.valence.context.GameContext;
 import campus.valence.movement.InMovement;
 import campus.valence.projectile.Projectile;
 
@@ -7,11 +8,12 @@ import javax.swing.*;
 import java.awt.*;
 import java.util.Random;
 
-import static campus.valence.SpaceCampus.*;
+import static campus.valence.SpaceCampus.destroyer;
 
 public abstract class Block extends JPanel implements InMovement {
     private int life;
     private boolean isAlreadyDidDamage;
+    private GameContext game;
 
     public int getLife() {
         return life;
@@ -22,6 +24,7 @@ public abstract class Block extends JPanel implements InMovement {
     }
 
     public Block(int frameWidth, int life) {
+        this.game = GameContext.getInstance();
         this.life = life;
         this.isAlreadyDidDamage = false;
         Random r = new Random();
@@ -34,9 +37,9 @@ public abstract class Block extends JPanel implements InMovement {
 
     @Override
     public void outOfWindow() {
-        if (this.getY() > frame.getHeight()) {
+        if (this.getY() > game.getFrame().getHeight()) {
             this.setVisible(false);
-            blocks.remove(this);
+            game.getBlocks().remove(this);
             if (!isAlreadyDidDamage) {
                 isAlreadyDidDamage = true;
                 destroyer.setLife(destroyer.getLife() - 1);
@@ -71,13 +74,13 @@ public abstract class Block extends JPanel implements InMovement {
     }
 
     public void checkIntersect () {
-        for (Projectile projectile: projectiles) {
+        for (Projectile projectile: game.getProjectiles()) {
             if (this.getBounds().intersects(projectile.getBounds())) {
                 this.setLife(getLife()-projectile.getStrength());
-                projectiles.remove(projectile);
+                game.getProjectiles().remove(projectile);
                 projectile.setVisible(false);
                 if (getLife() <= 0) {
-                    blocks.remove(this);
+                    game.getBlocks().remove(this);
                     this.setVisible(false);
                 }
             }

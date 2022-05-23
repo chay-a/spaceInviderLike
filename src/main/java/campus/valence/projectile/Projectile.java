@@ -1,14 +1,14 @@
 package campus.valence.projectile;
 
+import campus.valence.context.GameContext;
 import campus.valence.movement.InMovement;
 
 import javax.swing.*;
 import java.awt.*;
 
-import static campus.valence.SpaceCampus.projectiles;
-
 public abstract class Projectile extends JPanel implements InMovement {
     private int strength;
+    private GameContext game;
 
     public int getStrength() {
         return strength;
@@ -20,6 +20,7 @@ public abstract class Projectile extends JPanel implements InMovement {
 
 
     public Projectile(int xPosition, int yPosition, int strength) {
+        this.game = GameContext.getInstance();
         this.strength = strength;
         this.setBounds(xPosition, yPosition, 10, 10);
         this.setBackground(Color.magenta);
@@ -28,7 +29,7 @@ public abstract class Projectile extends JPanel implements InMovement {
     @Override
     public void outOfWindow() {
         if (this.getY() < 10) {
-            projectiles.remove(this);
+            game.getProjectiles().remove(this);
             this.setVisible(false);
         }
     }

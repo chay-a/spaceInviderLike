@@ -2,30 +2,29 @@ package campus.valence;
 
 import campus.valence.block.Block;
 import campus.valence.block.SimpleBlock;
-import campus.valence.projectile.Projectile;
+import campus.valence.context.GameContext;
 
 import javax.swing.*;
-import java.util.concurrent.CopyOnWriteArrayList;
+
 
 public class SpaceCampus {
 
-    public static JFrame frame;
     private JLayeredPane panel;
+    private GameContext game;
     public static Destroyer destroyer;
-    public static CopyOnWriteArrayList<Block> blocks = new CopyOnWriteArrayList<>();
-    public static CopyOnWriteArrayList<Projectile> projectiles = new CopyOnWriteArrayList<>();
 
     SpaceCampus() {
+        game = GameContext.getInstance();
         panel = new JLayeredPane();
         panel.setFocusable(true);
         panel.setLayout(null);
 
-        frame = new JFrame();
+        JFrame frame = new JFrame();
         frame.setTitle("SPACE CAMPUS");
         frame.setSize(400, 600);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setContentPane(panel);
-
+        game.setFrame(frame);
         createDestroyer();
 
 
@@ -34,7 +33,7 @@ public class SpaceCampus {
             public void run() {
                 while (true) {
                     createBlock();
-                    for (Block block : blocks) {
+                    for (Block block : game.getBlocks()) {
                         block.move();
                     }
                     try {
@@ -50,18 +49,18 @@ public class SpaceCampus {
 
 
     private void createBlock() {
-        Block block = new SimpleBlock(frame.getWidth());
-        blocks.add(block);
+        Block block = new SimpleBlock(game.getFrame().getWidth());
+        game.getBlocks().add(block);
         panel.add(block, 2, 0);
         panel.repaint();
     }
 
     public void launch() {
-        frame.setVisible(true);
+        game.getFrame().setVisible(true);
     }
 
     private void createDestroyer() {
-        destroyer = new Destroyer(this.panel, projectiles);
+        destroyer = new Destroyer(this.panel);
         this.panel.add(destroyer.getPanel());
         this.panel.addKeyListener(new GameKeyListener(destroyer));
     }
