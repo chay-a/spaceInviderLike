@@ -9,7 +9,7 @@ import java.util.concurrent.CopyOnWriteArrayList;
 
 public class SpaceCampus {
 
-    private JFrame frame;
+    public static JFrame frame;
     private JLayeredPane panel;
     private Destroyer destroyer;
     public static CopyOnWriteArrayList<Block> blocks = new CopyOnWriteArrayList<>();
@@ -36,16 +36,6 @@ public class SpaceCampus {
                     createBlock();
                     for (Block block : blocks) {
                         block.move();
-                        if (block.getY() > frame.getHeight()) {
-                            blocks.remove(block);
-                            block.setVisible(false);
-                        }
-                    }
-                    for (Projectile projectile : projectiles) {
-                        if (projectile.getY() < 10) {
-                            projectiles.remove(projectile);
-                            projectile.setVisible(false);
-                        }
                     }
                     try {
                         Thread.sleep(200000/60l);

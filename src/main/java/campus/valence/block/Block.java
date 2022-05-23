@@ -9,6 +9,7 @@ import java.util.Random;
 
 import static campus.valence.SpaceCampus.blocks;
 import static campus.valence.SpaceCampus.projectiles;
+import static campus.valence.SpaceCampus.frame;
 
 public abstract class Block extends JPanel implements InMovement {
     private int life;
@@ -32,6 +33,14 @@ public abstract class Block extends JPanel implements InMovement {
     }
 
     @Override
+    public void outOfWindow() {
+        if (this.getY() > frame.getHeight()) {
+            blocks.remove(this);
+            this.setVisible(false);
+        }
+    }
+
+    @Override
     public void move() {
         new Thread(new Runnable() {
             @Override
@@ -39,6 +48,10 @@ public abstract class Block extends JPanel implements InMovement {
                 while (true) {
                     setBounds(getX(), getY() + 1, getWidth(), getHeight());
                     checkIntersect();
+                    outOfWindow();
+                    if (!isVisible()) {
+                        return;
+                    }
                     try {
                         Thread.sleep(1000/60l);
                     } catch (Exception e) {
