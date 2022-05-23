@@ -11,7 +11,7 @@ public class SpaceCampus {
 
     public static JFrame frame;
     private JLayeredPane panel;
-    private Destroyer destroyer;
+    public static Destroyer destroyer;
     public static CopyOnWriteArrayList<Block> blocks = new CopyOnWriteArrayList<>();
     public static CopyOnWriteArrayList<Projectile> projectiles = new CopyOnWriteArrayList<>();
 
@@ -57,7 +57,7 @@ public class SpaceCampus {
     }
 
     public void launch() {
-        this.frame.setVisible(true);
+        frame.setVisible(true);
     }
 
     private void createDestroyer() {

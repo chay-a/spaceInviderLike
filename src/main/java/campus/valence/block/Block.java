@@ -7,12 +7,11 @@ import javax.swing.*;
 import java.awt.*;
 import java.util.Random;
 
-import static campus.valence.SpaceCampus.blocks;
-import static campus.valence.SpaceCampus.projectiles;
-import static campus.valence.SpaceCampus.frame;
+import static campus.valence.SpaceCampus.*;
 
 public abstract class Block extends JPanel implements InMovement {
     private int life;
+    private boolean isAlreadyDidDamage;
 
     public int getLife() {
         return life;
@@ -24,6 +23,7 @@ public abstract class Block extends JPanel implements InMovement {
 
     public Block(int frameWidth, int life) {
         this.life = life;
+        this.isAlreadyDidDamage = false;
         Random r = new Random();
         int low = 10;
         int high = frameWidth-40;
@@ -35,13 +35,21 @@ public abstract class Block extends JPanel implements InMovement {
     @Override
     public void outOfWindow() {
         if (this.getY() > frame.getHeight()) {
-            blocks.remove(this);
             this.setVisible(false);
+            blocks.remove(this);
+            if (!isAlreadyDidDamage) {
+                isAlreadyDidDamage = true;
+                destroyer.setLife(destroyer.getLife() - 1);
+                System.out.println(destroyer.getLife());
+                if (destroyer.getLife() <= 0) {
+                    System.exit(0);
+                }
+            }
         }
     }
 
     @Override
-    public void move() {
+    public void move(){
         new Thread(new Runnable() {
             @Override
             public void run() {

@@ -51,4 +51,12 @@ public class Destroyer {
     public JPanel getPanel() {
         return panel;
     }
+
+    public int getLife() {
+        return life;
+    }
+
+    public void setLife(int life) {
+        this.life = life;
+    }
 }
