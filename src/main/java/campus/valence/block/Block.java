@@ -43,7 +43,7 @@ public abstract class Block extends JPanel implements InMovement {
             if (!isAlreadyDidDamage) {
                 isAlreadyDidDamage = true;
                 destroyer.setLife(destroyer.getLife() - 1);
-                System.out.println(destroyer.getLife());
+                game.getLifeMenu().setText(Integer.toString(destroyer.getLife()));
                 if (destroyer.getLife() <= 0) {
                     System.exit(0);
                 }
@@ -80,6 +80,8 @@ public abstract class Block extends JPanel implements InMovement {
                 game.getProjectiles().remove(projectile);
                 projectile.setVisible(false);
                 if (getLife() <= 0) {
+                    game.setScore(game.getScore()+1);
+                    game.getScoreMenu().setText(Integer.toString(game.getScore()));
                     game.getBlocks().remove(this);
                     this.setVisible(false);
                 }

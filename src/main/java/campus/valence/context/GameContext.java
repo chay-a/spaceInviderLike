@@ -1,6 +1,6 @@
 package campus.valence.context;
 
-import campus.valence.Destroyer;
+
 import campus.valence.block.Block;
 import campus.valence.projectile.Projectile;
 
@@ -12,6 +12,34 @@ public class GameContext {
     private JFrame frame;
     private CopyOnWriteArrayList<Block> blocks = new CopyOnWriteArrayList<>();
     private CopyOnWriteArrayList<Projectile> projectiles = new CopyOnWriteArrayList<>();
+    private JLabel lifeMenu;
+    private JLabel scoreMenu;
+    private int score;
+
+    public int getScore() {
+        return score;
+    }
+
+    public void setScore(int score) {
+        this.score = score;
+    }
+
+    public JLabel getLifeMenu() {
+        return lifeMenu;
+    }
+
+    public void setLifeMenu(JLabel lifeMenu) {
+        this.lifeMenu = lifeMenu;
+    }
+
+    public JLabel getScoreMenu() {
+        return scoreMenu;
+    }
+
+    public void setScoreMenu(JLabel scoreMenu) {
+        this.scoreMenu = scoreMenu;
+    }
+
 
     public JFrame getFrame() {
         return frame;
@@ -39,7 +67,7 @@ public class GameContext {
 
     private GameContext()
     {
-
+        this.score =0;
     }
 
     public static GameContext getInstance()

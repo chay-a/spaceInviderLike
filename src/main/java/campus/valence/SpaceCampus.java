@@ -27,6 +27,24 @@ public class SpaceCampus {
         game.setFrame(frame);
         createDestroyer();
 
+        JPanel info = new JPanel();
+        info.setBounds(0, 0, 50, 100);
+        info.setOpaque(false);
+        JLabel life = new JLabel();
+        ImageIcon lifeIcon = new ImageIcon("heart.png");
+        life.setIcon(lifeIcon);
+        life.setText(Integer.toString(destroyer.getLife()));
+        info.add(life);
+        game.setLifeMenu(life);
+        JLabel score = new JLabel();
+        ImageIcon scoreIcon = new ImageIcon("death.png");
+        score.setIcon(scoreIcon);
+        score.setText(Integer.toString(game.getScore()));
+        info.add(score);
+        game.setScoreMenu(score);
+        panel.add(info, 5, 0);
+
+
 
         new Thread(new Runnable() {
             @Override
