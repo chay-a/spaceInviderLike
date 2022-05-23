@@ -21,19 +21,31 @@ public class Destroyer {
         this.parentPanel = parentPanel;
         this.life = 3;
         panel = new JPanel();
-        panel.setBounds(150, 500, 100, 30);
+        panel.setBounds(150, 500, 50, 50);
         panel.setBackground(Color.PINK);
     }
 
     public void moveLeft() {
-        if (panel.getX() > 10) {
-            moveX(-STEP);
+        if (game.isVertical()) {
+            if (panel.getX() > 10) {
+                moveX(-STEP);
+            }
+        } else {
+            if (panel.getY() > 10) {
+                moveY(-STEP);
+            }
         }
     }
 
     public void moveRight() {
-        if (panel.getX() < game.getFrame().getWidth()- panel.getWidth() - 10) {
-            moveX(STEP);
+        if (game.isVertical()) {
+            if (panel.getX() < game.getFrame().getWidth() - panel.getWidth() - 10) {
+                moveX(STEP);
+            }
+        } else {
+            if (panel.getY() < game.getFrame().getHeight() - panel.getHeight() - 50) {
+                moveY(STEP);
+            }
         }
     }
 
@@ -42,8 +54,22 @@ public class Destroyer {
         panel.setBounds(bounds.x + step, bounds.y, bounds.width, bounds.height);
     }
 
+    private void moveY(int step) {
+        Rectangle bounds = panel.getBounds();
+        panel.setBounds(bounds.x, bounds.y + step, bounds.width, bounds.height);
+    }
+
     public void destroyerFire() {
-        Projectile pro = new SimpleProjectile((panel.getX()+panel.getWidth())/2 + panel.getX()/2, panel.getY()-10);
+        int xPosition;
+        int yPosition;
+        if (game.isVertical()) {
+            xPosition = (panel.getX()+panel.getWidth())/2 + panel.getX()/2;
+            yPosition = panel.getY()-10;
+        } else {
+            xPosition = panel.getX() + panel.getWidth();
+            yPosition = (panel.getY()+panel.getHeight())/2 + panel.getY()/2;
+        }
+        Projectile pro = new SimpleProjectile(xPosition, yPosition);
         game.getProjectiles().add(pro);
         parentPanel.add(pro, 1, 0);
         pro.move();

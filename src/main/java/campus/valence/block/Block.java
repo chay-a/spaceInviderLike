@@ -29,15 +29,24 @@ public abstract class Block extends JPanel implements InMovement {
         this.isAlreadyDidDamage = false;
         Random r = new Random();
         int low = 10;
-        int high = frameWidth-40;
+        int high;
+        if (game.isVertical()){
+            high =frameWidth-40;
+        } else {
+            high = frameWidth-150;
+        }
         int result = r.nextInt(high-low) + low;
-        this.setBounds(result, 0, 30, 30);
+        if (game.isVertical()) {
+            this.setBounds(result, 0, 30, 30);
+        } else {
+            this.setBounds(game.getFrame().getWidth(), result, 30, 30);
+        }
         this.setBackground(Color.BLUE);
     }
 
     @Override
     public void outOfWindow() {
-        if (this.getY() > game.getFrame().getHeight()) {
+        if ((game.isVertical() && this.getY() > game.getFrame().getHeight()) || (!game.isVertical() && this.getX() < 0)) {
             this.setVisible(false);
             game.getBlocks().remove(this);
             if (!isAlreadyDidDamage) {
@@ -57,7 +66,11 @@ public abstract class Block extends JPanel implements InMovement {
             @Override
             public void run() {
                 while (true) {
-                    setBounds(getX(), getY() + 1, getWidth(), getHeight());
+                    if (game.isVertical()) {
+                        setBounds(getX(), getY() + 1, getWidth(), getHeight());
+                    } else {
+                        setBounds(getX()-1, getY(), getWidth(), getHeight());
+                    }
                     checkIntersect();
                     outOfWindow();
                     if (!isVisible()) {

@@ -13,8 +13,8 @@ public class SpaceCampus {
     private GameContext game;
     public static Destroyer destroyer;
 
-    SpaceCampus() {
-        game = GameContext.getInstance();
+    SpaceCampus(int cheat) {
+        game = GameContext.getInstance(cheat);
         panel = new JLayeredPane();
         panel.setFocusable(true);
         panel.setLayout(null);
@@ -22,6 +22,7 @@ public class SpaceCampus {
         JFrame frame = new JFrame();
         frame.setTitle("SPACE CAMPUS");
         frame.setSize(400, 600);
+        frame.setResizable(false);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setContentPane(panel);
         game.setFrame(frame);
@@ -67,7 +68,13 @@ public class SpaceCampus {
 
 
     private void createBlock() {
-        Block block = new SimpleBlock(game.getFrame().getWidth());
+        int maxPixel;
+        if (game.isVertical()) {
+            maxPixel = game.getFrame().getWidth();
+        } else {
+            maxPixel= game.getFrame().getHeight();
+        }
+        Block block = new SimpleBlock(maxPixel);
         game.getBlocks().add(block);
         panel.add(block, 2, 0);
         panel.repaint();
@@ -79,7 +86,8 @@ public class SpaceCampus {
 
     private void createDestroyer() {
         destroyer = new Destroyer(this.panel);
+        this.game.setDestroyer(destroyer);
         this.panel.add(destroyer.getPanel());
-        this.panel.addKeyListener(new GameKeyListener(destroyer));
+        this.panel.addKeyListener(new GameKeyListener(game));
     }
 }

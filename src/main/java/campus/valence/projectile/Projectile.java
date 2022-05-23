@@ -40,7 +40,11 @@ public abstract class Projectile extends JPanel implements InMovement {
             @Override
             public void run() {
                 while (true) {
-                    setBounds(getX(), getY() - 1, getWidth(), getHeight());
+                    if (game.isVertical()) {
+                        setBounds(getX(), getY() - 1, getWidth(), getHeight());
+                    } else {
+                        setBounds(getX()+1, getY(), getWidth(), getHeight());
+                    }
                     outOfWindow();
                     if (!isVisible()) {
                         return;

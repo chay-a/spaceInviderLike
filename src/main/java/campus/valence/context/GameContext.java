@@ -1,6 +1,7 @@
 package campus.valence.context;
 
 
+import campus.valence.Destroyer;
 import campus.valence.block.Block;
 import campus.valence.projectile.Projectile;
 
@@ -14,7 +15,26 @@ public class GameContext {
     private CopyOnWriteArrayList<Projectile> projectiles = new CopyOnWriteArrayList<>();
     private JLabel lifeMenu;
     private JLabel scoreMenu;
+    private Destroyer destroyer;
     private int score;
+
+    public Destroyer getDestroyer() {
+        return destroyer;
+    }
+
+    public void setDestroyer(Destroyer destroyer) {
+        this.destroyer = destroyer;
+    }
+
+    public boolean isVertical() {
+        return isVertical;
+    }
+
+    public void setVertical(boolean vertical) {
+        isVertical = vertical;
+    }
+
+    private boolean isVertical;
 
     public int getScore() {
         return score;
@@ -22,6 +42,20 @@ public class GameContext {
 
     public void setScore(int score) {
         this.score = score;
+        if (this.score%100 ==0) {
+            this.isVertical = !this.isVertical;
+            this.frame.setSize(this.frame.getHeight(), this.frame.getWidth());
+            JPanel destroyerPanel = this.destroyer.getPanel();
+            for (Block block : blocks) {
+                block.setVisible(false);
+                blocks.remove(block);
+            }
+            if (isVertical) {
+                destroyerPanel.setBounds(destroyerPanel.getY(), 500, destroyerPanel.getWidth(), destroyerPanel.getHeight());
+            } else {
+                destroyerPanel.setBounds(30, destroyerPanel.getX(), destroyerPanel.getWidth(), destroyerPanel.getHeight());
+            }
+        }
     }
 
     public JLabel getLifeMenu() {
@@ -65,15 +99,24 @@ public class GameContext {
         this.projectiles = projectiles;
     }
 
-    private GameContext()
+    private GameContext(int score)
     {
-        this.score =0;
+        this.score = score;
+        this.isVertical = true;
     }
 
     public static GameContext getInstance()
     {
         if (single_instance == null)
-            single_instance = new GameContext();
+            single_instance = new GameContext(0);
+
+        return single_instance;
+    }
+
+    public static GameContext getInstance(int cheat)
+    {
+        if (single_instance == null)
+            single_instance = new GameContext(cheat);
 
         return single_instance;
     }
