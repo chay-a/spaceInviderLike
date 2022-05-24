@@ -52,8 +52,12 @@ public class GameContext {
             }
             if (isVertical) {
                 destroyerPanel.setBounds(destroyerPanel.getY(), 500, destroyerPanel.getWidth(), destroyerPanel.getHeight());
+                JLabel destroyerLabel = destroyer.getImageLabel();
+                destroyerLabel.setIcon(new ImageIcon("img/default/ship.png"));
             } else {
                 destroyerPanel.setBounds(30, destroyerPanel.getX(), destroyerPanel.getWidth(), destroyerPanel.getHeight());
+                JLabel destroyerLabel = destroyer.getImageLabel();
+                destroyerLabel.setIcon(new ImageIcon("img/default/ship-horizontal.png"));
             }
         }
     }

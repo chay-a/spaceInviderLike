@@ -14,6 +14,16 @@ public class Destroyer {
     private int life;
     private final JPanel panel;
     private JLayeredPane parentPanel;
+
+    public JLabel getImageLabel() {
+        return imageLabel;
+    }
+
+    public void setImageLabel(JLabel imageLabel) {
+        this.imageLabel = imageLabel;
+    }
+
+    private JLabel imageLabel;
     private GameContext game;
 
     Destroyer(JLayeredPane parentPanel) {
@@ -22,7 +32,11 @@ public class Destroyer {
         this.life = 3;
         panel = new JPanel();
         panel.setBounds(150, 500, 50, 50);
-        panel.setBackground(Color.PINK);
+
+
+        ImageIcon image = new ImageIcon("img/default/ship.png");
+        imageLabel = new JLabel(image);
+        panel.add(imageLabel);
     }
 
     public void moveLeft() {
