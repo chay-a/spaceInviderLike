@@ -35,13 +35,17 @@ public abstract class Block extends JPanel implements InMovement {
         } else {
             high = frameWidth-150;
         }
+        ImageIcon image;
         int result = r.nextInt(high-low) + low;
         if (game.isVertical()) {
+            image = new ImageIcon("img/default/enemy.png");
             this.setBounds(result, 0, 30, 30);
         } else {
+            image = new ImageIcon("img/default/enemy-horizontal.png");
             this.setBounds(game.getFrame().getWidth(), result, 30, 30);
         }
-        this.setBackground(Color.BLUE);
+        JLabel labelImage = new JLabel(image);
+        this.add(labelImage);
     }
 
     @Override

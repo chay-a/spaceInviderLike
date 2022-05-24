@@ -5,6 +5,7 @@ import campus.valence.block.SimpleBlock;
 import campus.valence.context.GameContext;
 
 import javax.swing.*;
+import java.awt.*;
 
 
 public class SpaceCampus {
@@ -75,6 +76,7 @@ public class SpaceCampus {
             maxPixel= game.getFrame().getHeight();
         }
         Block block = new SimpleBlock(maxPixel);
+
         game.getBlocks().add(block);
         panel.add(block, 2, 0);
         panel.repaint();
