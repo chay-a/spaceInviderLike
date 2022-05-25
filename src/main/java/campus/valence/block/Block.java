@@ -23,10 +23,17 @@ public abstract class Block extends JPanel implements InMovement {
         this.life = life;
     }
 
-    public Block(int frameWidth, int life) {
+    public GameContext getGame() {
+        return game;
+    }
+
+
+
+    public Block(int frameWidth, int life, String imageType) {
         this.game = GameContext.getInstance();
         this.life = life;
         this.isAlreadyDidDamage = false;
+        this.setOpaque(false);
         Random r = new Random();
         int low = 10;
         int high;
@@ -38,11 +45,11 @@ public abstract class Block extends JPanel implements InMovement {
         ImageIcon image;
         int result = r.nextInt(high-low) + low;
         if (game.isVertical()) {
-            image = new ImageIcon("img/default/enemy.png");
-            this.setBounds(result, 0, 30, 30);
+            image = new ImageIcon("./img/default/"+imageType+".png");
+            this.setBounds(result, 0, 40, 40);
         } else {
-            image = new ImageIcon("img/default/enemy-horizontal.png");
-            this.setBounds(game.getFrame().getWidth(), result, 30, 30);
+            image = new ImageIcon("./img/default/"+imageType+"-horizontal.png");
+            this.setBounds(game.getFrame().getWidth(), result, 40, 40);
         }
         JLabel labelImage = new JLabel(image);
         this.add(labelImage);
@@ -93,16 +100,12 @@ public abstract class Block extends JPanel implements InMovement {
     public void checkIntersect () {
         for (Projectile projectile: game.getProjectiles()) {
             if (this.getBounds().intersects(projectile.getBounds())) {
-                this.setLife(getLife()-projectile.getStrength());
+                blockAction(projectile);
                 game.getProjectiles().remove(projectile);
                 projectile.setVisible(false);
-                if (getLife() <= 0) {
-                    game.setScore(game.getScore()+1);
-                    game.getScoreMenu().setText(Integer.toString(game.getScore()));
-                    game.getBlocks().remove(this);
-                    this.setVisible(false);
-                }
             }
         }
     }
+
+    public abstract void blockAction(Projectile projectile);
 }

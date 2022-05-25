@@ -4,7 +4,6 @@ import campus.valence.context.GameContext;
 import campus.valence.movement.InMovement;
 
 import javax.swing.*;
-import java.awt.*;
 
 public abstract class Projectile extends JPanel implements InMovement {
     private int strength;
@@ -19,11 +18,22 @@ public abstract class Projectile extends JPanel implements InMovement {
     }
 
 
-    public Projectile(int xPosition, int yPosition, int strength) {
+    public Projectile() {
+    }
+
+    public Projectile(int xPosition, int yPosition, int strength, String imagePro) {
         this.game = GameContext.getInstance();
         this.strength = strength;
-        this.setBounds(xPosition, yPosition, 10, 10);
-        this.setBackground(Color.magenta);
+        this.setOpaque(false);
+        ImageIcon image;
+        if (game.isVertical()){
+            image = new ImageIcon("./img/default/"+imagePro+".png");
+        } else {
+            image = new ImageIcon("./img/default/"+imagePro+"-horizontal.png");
+        }
+        this.setBounds(xPosition, yPosition, 20, 20);
+        JLabel label = new JLabel(image);
+        this.add(label);
     }
 
     @Override

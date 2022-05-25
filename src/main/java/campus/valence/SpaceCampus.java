@@ -1,7 +1,6 @@
 package campus.valence;
 
-import campus.valence.block.Block;
-import campus.valence.block.SimpleBlock;
+import campus.valence.block.*;
 import campus.valence.context.GameContext;
 
 import javax.swing.*;
@@ -16,7 +15,16 @@ public class SpaceCampus {
 
     SpaceCampus(int cheat) {
         game = GameContext.getInstance(cheat);
-        panel = new JLayeredPane();
+        panel = new JLayeredPane() {
+            public void paintComponent(Graphics g){
+                super.paintComponent(g);
+                //draw background image
+                Graphics2D g2d = (Graphics2D) g.create();
+                ImageIcon imageIcon = new ImageIcon("./img/default/background.jpeg");
+                g2d.drawImage(imageIcon.getImage(), 0, 0, this);
+                g2d.dispose();
+            }
+        };
         panel.setFocusable(true);
         panel.setLayout(null);
 
@@ -31,15 +39,16 @@ public class SpaceCampus {
 
         JPanel info = new JPanel();
         info.setBounds(0, 0, 50, 100);
-        info.setOpaque(false);
+        info.setOpaque(true);
+        info.setBackground(new Color(255, 255, 255, 150));
         JLabel life = new JLabel();
-        ImageIcon lifeIcon = new ImageIcon("heart.png");
+        ImageIcon lifeIcon = new ImageIcon("./img/default/heart.png");
         life.setIcon(lifeIcon);
         life.setText(Integer.toString(destroyer.getLife()));
         info.add(life);
         game.setLifeMenu(life);
         JLabel score = new JLabel();
-        ImageIcon scoreIcon = new ImageIcon("death.png");
+        ImageIcon scoreIcon = new ImageIcon("./img/default/death.png");
         score.setIcon(scoreIcon);
         score.setText(Integer.toString(game.getScore()));
         info.add(score);
@@ -75,7 +84,24 @@ public class SpaceCampus {
         } else {
             maxPixel= game.getFrame().getHeight();
         }
-        Block block = new SimpleBlock(maxPixel);
+        int random = (int) (Math.random()*5);
+        Block block;
+        switch (random) {
+            case 1:
+                block = new MassBlock(maxPixel);
+                break;
+            case 2:
+                block = new BigBlock(maxPixel);
+                break;
+            case 3:
+                block = new ShieldBlock(maxPixel);
+                break;
+            case 4:
+                block = new ProjectileBlock(maxPixel);
+                break;
+            default:
+                block = new SimpleBlock(maxPixel);
+        }
 
         game.getBlocks().add(block);
         panel.add(block, 2, 0);

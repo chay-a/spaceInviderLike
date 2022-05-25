@@ -14,6 +14,19 @@ public class Destroyer {
     private int life;
     private final JPanel panel;
     private JLayeredPane parentPanel;
+    private JLabel imageLabel;
+    private GameContext game;
+    private String projectile;
+
+
+    public String getProjectile() {
+        return projectile;
+    }
+
+    public void setProjectile(String projectile) {
+        this.projectile = projectile;
+    }
+
 
     public JLabel getImageLabel() {
         return imageLabel;
@@ -23,18 +36,16 @@ public class Destroyer {
         this.imageLabel = imageLabel;
     }
 
-    private JLabel imageLabel;
-    private GameContext game;
-
     Destroyer(JLayeredPane parentPanel) {
+        this.projectile = "SimpleProjectile";
         this.game = GameContext.getInstance();
         this.parentPanel = parentPanel;
         this.life = 3;
         panel = new JPanel();
         panel.setBounds(150, 500, 50, 50);
+        panel.setOpaque(false);
 
-
-        ImageIcon image = new ImageIcon("img/default/ship.png");
+        ImageIcon image = new ImageIcon("./img/default/ship.png");
         imageLabel = new JLabel(image);
         panel.add(imageLabel);
     }
@@ -83,7 +94,16 @@ public class Destroyer {
             xPosition = panel.getX() + panel.getWidth();
             yPosition = (panel.getY()+panel.getHeight())/2 + panel.getY()/2;
         }
-        Projectile pro = new SimpleProjectile(xPosition, yPosition);
+        Projectile pro;
+        try {
+            Class<?> TypePorjectile = Class.forName("campus.valence.projectile."+projectile);
+            Class[] paramType = new Class[2];
+            paramType[0] = int.class;
+            paramType[1] = int.class;
+            pro = (Projectile) TypePorjectile.getDeclaredConstructor(paramType).newInstance(xPosition, yPosition);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
         game.getProjectiles().add(pro);
         parentPanel.add(pro, 1, 0);
         pro.move();

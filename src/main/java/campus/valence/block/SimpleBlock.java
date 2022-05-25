@@ -1,9 +1,7 @@
 package campus.valence.block;
 
-public class SimpleBlock extends Block{
+public class SimpleBlock extends EnemyBlock{
     public SimpleBlock(int frameWidth) {
-        super(frameWidth, 3);
+        super(frameWidth, 5, "enemy");
     }
-
-
 }
